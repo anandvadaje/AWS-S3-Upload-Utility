@@ -16,7 +16,7 @@ namespace UIC_OTD_Upload_Utility
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new UploadUtlityForm());
         }
     }
 }
