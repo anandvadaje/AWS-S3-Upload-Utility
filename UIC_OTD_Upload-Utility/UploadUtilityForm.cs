@@ -2,30 +2,37 @@
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace UIC_OTD_Upload_Utility
 {
     public partial class UploadUtlityForm : Form
     {
+        UploadProgressForm progressForm;
+
         public UploadUtlityForm()
         {
+            progressForm = new UploadProgressForm();
             InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            progressForm.Show();
+
             string bucket = textBox1.Text;
             string file = textBox2.Text;
 
+            Stopwatch watch = Stopwatch.StartNew();
+
             Upload(bucket, file);
+
+            watch.Stop();
+            TimeSpan ts = watch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+
+            label5.Text = "Time Take to Upload = " + elapsedTime;
         }
 
         public void Upload(string bucket, string file)
@@ -33,7 +40,7 @@ namespace UIC_OTD_Upload_Utility
             string bucketName = bucket;
             string filePath = file;
             var client = new AmazonS3Client(Amazon.RegionEndpoint.USEast1);
-
+            
             try
             {
                 TransferUtility fileTransferUtility = new TransferUtility(client);
@@ -59,11 +66,15 @@ namespace UIC_OTD_Upload_Utility
                     Expires = DateTime.Now.AddMinutes(200)
                 };
 
+                progressForm.label2.Text = "File Upload completed";
+
                 string urlString = client.GetPreSignedURL(request1);
 
                 textBox3.Text = urlString;
 
                 Console.WriteLine("File Upload completed");
+
+                progressForm.Hide();
             }
             catch (AmazonS3Exception amazonS3Exception)
             {
@@ -77,7 +88,6 @@ namespace UIC_OTD_Upload_Utility
                 }
             }
         }
-        private delegate void UpdateProgressBarDelegate(object sender, UploadProgressArgs e);
 
         void uploadRequest_UploadPartProgressEvent(object sender, UploadProgressArgs e)
         {
@@ -90,14 +100,13 @@ namespace UIC_OTD_Upload_Utility
                 if (InvokeRequired)
                 {
                     object[] args = new object[] { sender, e };
-                    Invoke(new UpdateProgressBarDelegate(uploadRequest_UploadPartProgressEvent), args);
+                    Invoke((MethodInvoker)delegate { uploadRequest_UploadPartProgressEvent(sender, e); } );
                 }
                 else
                 {
                     int val = (int)((e.TransferredBytes / e.TotalBytes) * 100);
-                    progressBar1.Value = val;
-
-                    label4.Text = String.Format("{0}% Upload Done", val);
+                    progressForm.progressBar1.Value = val;
+                    progressForm.label1.Text = String.Format("{0}% Upload Done", val);
                 }
             }
         }
