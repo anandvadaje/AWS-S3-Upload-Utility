@@ -31,7 +31,7 @@ namespace AWS_S3_Upload_Utility
 
         public string Upload(string bucket, string file)
         {
-            string bucketName = bucket;
+            string bucketName = "ananduic/" + bucket;
             string filePath = file;
             var client = new AmazonS3Client(Amazon.RegionEndpoint.USEast1);
             
@@ -104,6 +104,17 @@ namespace AWS_S3_Upload_Utility
             textBox3.Text = url;
             label5.Text = "Upload Time: " + elapsedTime;
             label5.Visible = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Show the dialog and get result.
+            DialogResult result = openFileDialog1.ShowDialog();
+
+            if (result == DialogResult.OK) // Test result.
+            {
+                textBox2.Text = openFileDialog1.FileName;
+            }
         }
     }
 }
