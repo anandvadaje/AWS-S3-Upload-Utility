@@ -3,33 +3,31 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
-namespace UIC_OTD_Upload_Utility
+namespace AWS_S3_Upload_Utility
 {
     public partial class UploadUtlityForm : Form
     {
         string bucket = "";
         string file = "";
-        static string url = "";
-
+        string url = "";
+        string elapsedTime = "";
+        
         public UploadUtlityForm()
         {
-           InitializeComponent();
+            InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             bucket = textBox1.Text;
             file = textBox2.Text;
-            Stopwatch watch = Stopwatch.StartNew();
+            
             pictureBox1.Visible = true;
-
             backgroundWorker.RunWorkerAsync();
-
-            watch.Stop();
-            TimeSpan ts = watch.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            
         }
 
         public string Upload(string bucket, string file)
@@ -59,7 +57,7 @@ namespace UIC_OTD_Upload_Utility
                 GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
                 {
                     BucketName = bucketName,
-                    Key = "soln.txt",
+                    Key = Path.GetFileName(filePath),
                     Expires = DateTime.Now.AddMinutes(200)
                 };
                 
@@ -91,14 +89,18 @@ namespace UIC_OTD_Upload_Utility
 
         private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            Stopwatch watch = Stopwatch.StartNew();
             url = Upload(bucket, file);
+            watch.Stop();
+            TimeSpan ts = watch.Elapsed;
+            elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             if (pictureBox1.Visible)
             {
-                pictureBox1.Visible = false;
+                pictureBox1.Visible = false;    
             }
                 
             progressBar1.Value = e.ProgressPercentage;
@@ -109,6 +111,8 @@ namespace UIC_OTD_Upload_Utility
         {
             label4.Text = "File Upload Completed !!";
             textBox3.Text = url;
+            label5.Text = "Upload Time: " + elapsedTime;
+            label5.Visible = true;
         }
     }
 }

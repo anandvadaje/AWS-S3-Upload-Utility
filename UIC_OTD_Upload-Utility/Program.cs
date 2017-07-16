@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace UIC_OTD_Upload_Utility
+namespace AWS_S3_Upload_Utility
 {
     static class Program
     {

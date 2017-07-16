@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{301AE3C5-4B98-4C48-9A3E-A250A7C14C17}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UIC_OTD_Upload_Utility</RootNamespace>
-    <AssemblyName>UIC_OTD_Upload-Utility</AssemblyName>
+    <RootNamespace>AWS_S3_Upload_Utility</RootNamespace>
+    <AssemblyName>AWS_S3_Upload_Utility</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -54,12 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UploadProgressForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UploadProgressForm.Designer.cs">
-      <DependentUpon>UploadProgressForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UploadUtilityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,9 +62,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="UploadProgressForm.resx">
-      <DependentUpon>UploadProgressForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UploadUtilityForm.resx">
       <DependentUpon>UploadUtilityForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -99,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\scanningwoohoo.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AmazonS3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

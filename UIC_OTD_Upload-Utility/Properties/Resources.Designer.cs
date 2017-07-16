@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UIC_OTD_Upload_Utility.Properties {
+namespace AWS_S3_Upload_Utility.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace UIC_OTD_Upload_Utility.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UIC_OTD_Upload_Utility.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AWS_S3_Upload_Utility.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,16 @@ namespace UIC_OTD_Upload_Utility.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AmazonS3 {
+            get {
+                object obj = ResourceManager.GetObject("AmazonS3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
