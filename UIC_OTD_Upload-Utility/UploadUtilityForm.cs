@@ -24,10 +24,9 @@ namespace AWS_S3_Upload_Utility
         {
             bucket = textBox1.Text;
             file = textBox2.Text;
-            
             pictureBox1.Visible = true;
+
             backgroundWorker.RunWorkerAsync();
-            
         }
 
         public string Upload(string bucket, string file)
@@ -39,29 +38,22 @@ namespace AWS_S3_Upload_Utility
             try
             {
                 TransferUtility fileTransferUtility = new TransferUtility(client);
-                fileTransferUtility.Upload(filePath, bucketName);
-
-                // Use TransferUtilityUploadRequest to configure options.
-                // In this example we subscribe to an event.
                 TransferUtilityUploadRequest uploadRequest =
                     new TransferUtilityUploadRequest
                     {
                         BucketName = bucketName,
                         FilePath = filePath,
                     };
-
                 uploadRequest.UploadProgressEvent += new EventHandler<UploadProgressArgs>(uploadProgress);
-
                 fileTransferUtility.Upload(uploadRequest);
 
-                GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
+                GetPreSignedUrlRequest requestURL = new GetPreSignedUrlRequest
                 {
                     BucketName = bucketName,
                     Key = Path.GetFileName(filePath),
-                    Expires = DateTime.Now.AddMinutes(200)
+                    Expires = DateTime.Now.AddMinutes(200),
                 };
-                
-                string urlString = client.GetPreSignedURL(request1);
+                string urlString = client.GetPreSignedURL(requestURL);
                 Console.WriteLine("File Upload completed");
 
                 return urlString;
@@ -101,8 +93,7 @@ namespace AWS_S3_Upload_Utility
             if (pictureBox1.Visible)
             {
                 pictureBox1.Visible = false;    
-            }
-                
+            }    
             progressBar1.Value = e.ProgressPercentage;
             label4.Text = e.ProgressPercentage + "% Upload Completed .....";
         }
